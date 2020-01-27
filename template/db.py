@@ -18,8 +18,13 @@ class Database():
     :param num_columns: int     #Number of Columns: all columns are integer
     :param key: int             #Index of table key in columns
     """
-    def create_table(self, name, num_columns, key):
-        table = Table(name, num_columns, key)
+    def create_table(self, name, key, num_columns):
+        table = Table(name, key, num_columns)
+        #not sure about this part of the code
+        table.page_directory.update({'RID': table.create_page(), 'key': table.create_page()})
+        for col in num_columns:
+            table.page_directory.update({str(col): table.create_page()})
+
         return table
 
     """
@@ -27,3 +32,10 @@ class Database():
     """
     def drop_table(self, name):
         pass
+
+#        self.rid = rid
+#        self.key = key
+#        self.columns = columns
+#        self.indirection = 0
+#        self.schema_encoding = schema_encoding
+#        self.time_stamp = time()

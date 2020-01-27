@@ -1,6 +1,7 @@
 from template.table import Table, Record
 from template.index import Index
 
+RID = 1
 
 class Query:
     """
@@ -25,6 +26,8 @@ class Query:
 
     def insert(self, *columns):
         schema_encoding = '0' * self.table.num_columns
+        record = Record(RID, self.table.key, columns, schema_encoding)
+
         pass
 
     """
