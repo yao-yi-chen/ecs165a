@@ -22,7 +22,7 @@ class Database():
         table = Table(name, key, num_columns)
         #not sure about this part of the code
         table.page_directory.update({'RID': table.create_page(), 'key': table.create_page()})
-        for col in num_columns:
+        for col in range(0,num_columns):
             table.page_directory.update({str(col): table.create_page()})
 
         return table
