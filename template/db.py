@@ -20,11 +20,14 @@ class Database():
     """
     def create_table(self, name, key, num_columns):
         table = Table(name, key, num_columns)
-        #not sure about this part of the code
-        table.page_directory.update({'RID': table.create_page(), 'key': table.create_page()})
-        for col in num_columns:
-            table.page_directory.update({str(col): table.create_page()})
-
+        """
+        update the base_pages field that was added in the table.py file
+        """
+        table.base_pages.update({'RID': table.create_page(), 'Indirection': table.create_page(),
+                                 'Schema Encoding': table.create_page(), 'Start Time': table.create_page(),
+                                 'key': table.create_page()})
+        for col in range(0, num_columns):
+            table.base_pages.update({str(col): table.create_page()})
         return table
 
     """

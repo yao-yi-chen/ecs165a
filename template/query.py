@@ -1,16 +1,15 @@
 from template.table import Table, Record
 from template.index import Index
 
-RID = 1
 
 class Query:
-
     """
-    # Creates a Query object that can perform different queries on the specified table 
+    # Creates a Query object that can perform different queries on the specified table
     """
 
     def __init__(self, table):
         self.table = table
+        self.RID = 1
         pass
 
     """
@@ -26,14 +25,27 @@ class Query:
     """
 
     def insert(self, *columns):
-        global RID
         schema_encoding = '0' * self.table.num_columns
 
-        for i in self.table.num_columns
-            Record(RID, self.table.key, columns[i], schema_encoding)
-        RID = RID + 1
+        record = Record(self.RID, self.table.key, columns)
+        self.RID += 1  # update RID value for next insert
+        pages = self.table.base_pages
+        """
+        Since each column will be at max a 64 bit integer, we can index the bytearray
+        from page by a slice of 8 bytes and add values to those specific slices.
 
-        pass
+        NOTE: let a be an integer,
+            (a).to_bytes(length=8,byteorder='big') turns an integer into its 8 byte representation
+        """
+
+        if pages['RID'].has_capacity():
+            pages['RID'].write(record.rid)
+            pages['Indirection'].write(record.indirection)
+            pages['Schema Encoding'].write(int(schema_encoding))
+            pages['Start Time'].write(int(record.time_stamp))
+            for col in range(0, len(columns)):
+                pages[str(col)].write(columns[col])
+        # Else make new pages
 
     """
     # Read a record with specified key
@@ -57,4 +69,3 @@ class Query:
 
     def sum(self, start_range, end_range, aggregate_column_index):
         pass
-

@@ -9,14 +9,12 @@ SCHEMA_ENCODING_COLUMN = 3
 
 class Record:
 
-    def __init__(self, rid, key, columns, se):
+    def __init__(self, rid, key, columns):
         self.rid = rid
         self.key = key
         self.columns = columns
         self.indirection = 0
-        self.schema_encoding = se
-        self.timestamp = time()
-
+        self.time_stamp = time()
 
 class Table:
 
@@ -30,11 +28,11 @@ class Table:
         self.key = key
         self.num_columns = num_columns
         self.page_directory = {}
+        self.base_pages = {}
         pass
 
     def create_page(self):
-        Page()
+        return Page()
 
     def __merge(self):
         pass
- 

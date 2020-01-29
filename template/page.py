@@ -1,5 +1,6 @@
 from template.config import *
 
+MAX_RECORDS = 500
 
 class Page:
 
@@ -8,9 +9,10 @@ class Page:
         self.data = bytearray(4096)
 
     def has_capacity(self):
-        pass
+        return self.num_records <= MAX_RECORDS
 
     def write(self, value):
+        self.data[(self.num_records * 8):(self.num_records * 8) + 8] = value.to_bytes(length=8, byteorder='big')
         self.num_records += 1
         pass
 
