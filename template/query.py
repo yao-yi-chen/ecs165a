@@ -45,7 +45,6 @@ class Query:
             pages['Start Time'].write(int(record.time_stamp))
             for col in range(0, len(columns)):
                 pages[str(col)].write(columns[col])
-        # Else make new pages
 
     """
     # Read a record with specified key

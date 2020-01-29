@@ -1,6 +1,6 @@
 from template.config import *
 
-MAX_RECORDS = 500
+MAX_RECORDS = 512
 
 class Page:
 

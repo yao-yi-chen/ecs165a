@@ -29,6 +29,7 @@ class Table:
         self.num_columns = num_columns
         self.page_directory = {}
         self.base_pages = {}
+        self.tail_pages = {}
         pass
 
     def create_page(self):
