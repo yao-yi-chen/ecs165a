@@ -1,6 +1,7 @@
 from template.table import Table, Record
 from template.index import Index
 
+GLOBAL_RID = 1
 
 class Query:
     """
@@ -9,7 +10,7 @@ class Query:
 
     def __init__(self, table):
         self.table = table
-        self.RID = 1
+        self.RID = GLOBAL_RID
         pass
 
     """
