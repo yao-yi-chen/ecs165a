@@ -4,6 +4,7 @@ from template.index import Index
 RID = 1
 
 class Query:
+
     """
     # Creates a Query object that can perform different queries on the specified table 
     """
@@ -25,8 +26,12 @@ class Query:
     """
 
     def insert(self, *columns):
+        global RID
         schema_encoding = '0' * self.table.num_columns
-        record = Record(RID, self.table.key, columns, schema_encoding)
+
+        for i in self.table.num_columns
+            Record(RID, self.table.key, columns[i], schema_encoding)
+        RID = RID + 1
 
         pass
 
@@ -52,3 +57,4 @@ class Query:
 
     def sum(self, start_range, end_range, aggregate_column_index):
         pass
+
