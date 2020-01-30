@@ -1,7 +1,10 @@
 from template.table import Table, Record
 from template.index import Index
+from template.config import *
 
-GLOBAL_RID = 1
+BASE_RID = 1
+TAIL_RID = 2 ** 64 - 1
+
 
 class Query:
     """
@@ -10,7 +13,6 @@ class Query:
 
     def __init__(self, table):
         self.table = table
-        self.RID = GLOBAL_RID
         pass
 
     """
@@ -26,26 +28,26 @@ class Query:
     """
 
     def insert(self, *columns):
+
         schema_encoding = '0' * self.table.num_columns
 
-        record = Record(self.RID, self.table.key, columns)
-        self.RID += 1  # update RID value for next insert
+        global BASE_RID
+        record = Record(BASE_RID, self.table.key, columns)
+        BASE_RID += 1  # update RID value for next insert
         pages = self.table.base_pages
-        """
-        Since each column will be at max a 64 bit integer, we can index the bytearray
-        from page by a slice of 8 bytes and add values to those specific slices.
 
-        NOTE: let a be an integer,
-            (a).to_bytes(length=8,byteorder='big') turns an integer into its 8 byte representation
-        """
+        in_col = len(pages) - len(columns) - 4
+        rid_col = len(pages) - len(columns) - 3
+        time_col = len(pages) - len(columns) - 2
+        se_col = len(pages) - len(columns) - 1
 
-        if pages['RID'].has_capacity():
-            pages['RID'].write(record.rid)
-            pages['Indirection'].write(record.indirection)
-            pages['Schema Encoding'].write(int(schema_encoding))
-            pages['Start Time'].write(int(record.time_stamp))
-            for col in range(0, len(columns)):
-                pages[str(col)].write(columns[col])
+        if pages[in_col].has_capacity():
+            pages[in_col].write(record.rid)
+            pages[rid_col].write(record.indirection)
+            pages[time_col].write(int(schema_encoding))
+            pages[se_col].write(int(record.time_stamp))
+            for col_index in range(0, len(columns)):
+                pages[len(pages) - len(columns) + col_index].write(columns[col_index])
 
     """
     # Read a record with specified key
@@ -59,6 +61,9 @@ class Query:
     """
 
     def update(self, key, *columns):
+        global TAIL_RID
+        # Insert into tail page here
+        TAIL_RID += 1
         pass
 
     """

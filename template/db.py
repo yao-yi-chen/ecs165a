@@ -23,11 +23,10 @@ class Database():
         """
         update the base_pages field that was added in the table.py file
         """
-        table.base_pages.update({'RID': table.create_page(), 'Indirection': table.create_page(),
-                                 'Schema Encoding': table.create_page(), 'Start Time': table.create_page(),
-                                 'key': table.create_page()})
-        for col in range(0, num_columns):
-            table.base_pages.update({str(col): table.create_page()})
+        for col in range(0, num_columns + 5):
+            table.base_pages.append(table.create_page())
+
+        self.tables.append(table)
         return table
 
     """
