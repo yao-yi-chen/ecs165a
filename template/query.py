@@ -36,18 +36,27 @@ class Query:
         BASE_RID += 1  # update RID value for next insert
         pages = self.table.base_pages
 
+        # If base pages full, add new ones
+        if not pages[len(pages) - len(columns) - 4].has_capacity():
+            for col in range(0, self.table.num_columns + 5):
+                self.table.base_pages.append(self.table.create_page())
+
+        # Get indices of base pages
         in_col = len(pages) - len(columns) - 4
         rid_col = len(pages) - len(columns) - 3
         time_col = len(pages) - len(columns) - 2
         se_col = len(pages) - len(columns) - 1
 
-        if pages[in_col].has_capacity():
-            pages[in_col].write(record.rid)
-            pages[rid_col].write(record.indirection)
-            pages[time_col].write(int(schema_encoding))
-            pages[se_col].write(int(record.time_stamp))
-            for col_index in range(0, len(columns)):
-                pages[len(pages) - len(columns) + col_index].write(columns[col_index])
+        pages[in_col].write(record.rid)
+        pages[rid_col].write(record.indirection)
+        pages[time_col].write(int(schema_encoding))
+        pages[se_col].write(int(record.time_stamp))
+
+        for col_index in range(0, len(columns)):
+            pages[len(pages) - len(columns) + col_index].write(columns[col_index])
+
+        # Insert RID - page location into the page directory
+        self.table.page_directory.update({record.rid: in_col})
 
     """
     # Read a record with specified key

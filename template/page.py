@@ -1,5 +1,6 @@
 from template.config import *
 
+
 class Page:
 
     def __init__(self):

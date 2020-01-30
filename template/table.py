@@ -2,6 +2,12 @@ from template.page import *
 from time import time
 from template.config import *
 
+
+class BTree:
+    def __init__(self):
+        pass
+
+
 class Record:
 
     def __init__(self, rid, key, columns):
@@ -10,6 +16,7 @@ class Record:
         self.columns = columns
         self.indirection = 0
         self.time_stamp = time()
+
 
 class Table:
 
@@ -22,7 +29,7 @@ class Table:
         self.name = name
         self.key = key
         self.num_columns = num_columns
-        self.page_directory = {}
+        self.page_directory = {}  # Will keep page directory as a dictionary until B-tree is fully implemented
         self.base_pages = []
         self.tail_pages = []
         pass
