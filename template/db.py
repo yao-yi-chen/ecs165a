@@ -24,7 +24,9 @@ class Database():
         """
         update the base_pages field that was added in the table.py file
         """
-        for col in range(0, num_columns + 5):
+
+        # Four extra columns for indirection, rid, schema encoding, and the timestamp
+        for col in range(0, num_columns + 4):
             table.base_pages.append(table.create_page())
 
         self.tables.append(table)

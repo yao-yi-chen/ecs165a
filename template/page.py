@@ -8,7 +8,10 @@ class Page:
         self.data = bytearray(4096)
 
     def has_capacity(self):
-        return self.num_records <= MAX_RECORDS
+        return self.num_records < MAX_RECORDS
+
+    def records(self):
+        return self.num_records
 
     """
     Since each column will be at max a 64 bit integer, we can index the bytearray
