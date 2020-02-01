@@ -95,7 +95,7 @@ class Query:
 
         # Create new tail record
         tail_record = Record(TAIL_RID, self.table.key, columns)
-        TAIL_RID += 1
+        TAIL_RID -= 1
 
         # Retrieve tail pages or create new ones
         page_rg = int(base_rid / PAGE_RANGE_SIZE)
